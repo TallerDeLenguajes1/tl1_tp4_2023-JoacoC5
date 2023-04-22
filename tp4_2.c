@@ -11,8 +11,11 @@ struct Tarea
 
 } typedef tarea;
 
+tarea buscarTarea(tarea **lista, int a);
+
 int main () {
 
+    srand(time(NULL));
     int cant;
 
     printf("Ingrese cuantas tareas debe cargar: ");
@@ -72,17 +75,52 @@ int main () {
             printf("\nTarea id: %d\n", pendientes[i]->tareaID);
             printf("Descripcion: %s\n", pendientes[i]->descripcion);
             printf("Duracion: %d\n", pendientes[i]->duracion);
-        } else
-        {
-            break;
-        }
-        
-        
+        } 
+            
     }
+
+    tarea buscador = buscarTarea(pendientes, cant);
     
-    
+    if (buscador.descripcion != NULL)
+    {
+        puts("-----TAREA ENCONTRADA-----");
+        printf("ID: %d\n", buscador.tareaID);
+        printf("Descripcion: %s\n", buscador.descripcion);
+        printf("Duracion: %d\n", buscador.duracion);
+    } else
+    {
+        puts("-----TAREA NO ENCONTRADA-----");
+    }
     
     
 
     return 0;
+}
+
+tarea buscarTarea(tarea **lista, int a)
+{
+    int aux;
+    tarea *buscador;
+
+    puts("\n\n----BUSCADOR DE TAREAS----");
+    printf("\nID a buscar: ");
+    scanf("%d", &aux);
+    fflush(stdin);
+
+    for (int i = 0; i < a; i++)
+    {
+        if (lista[i] != NULL)
+        {
+            if (lista[i]->tareaID == aux)
+            {
+                buscador = lista[i];
+                break;
+            }
+        }
+        
+        
+    }
+
+    return *buscador;
+    
 }
