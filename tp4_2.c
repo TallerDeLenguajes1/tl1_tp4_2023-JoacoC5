@@ -81,32 +81,62 @@ int main () {
 
     fflush(stdin);
     
-    
-    tarea buscadorP = buscarTareaPorPalabra(pendientes, cant);
+    int opcion1, opcion2;
 
-    if (buscadorP.descripcion != NULL)
+    printf("\n\nDesea buscar una tarea pendiente?? // 1=si - 0=no //: ");
+    scanf("%d", &opcion1);
+    fflush(stdin);
+    
+    if (opcion1 == 1)
     {
-        puts("\n\n----TAREA ENCONTRADA----");
-        printf("ID: %d\n", buscadorP.tareaID);
-        printf("Descripcion: %s\n", buscadorP.descripcion);
-        printf("Duracion: %d\n", buscadorP.duracion);
+        printf("\nDesea buscar por palabra o por ID?? // 1=palabra - 2=ID //: ");
+        scanf("%d", &opcion2);
+        fflush(stdin);
+
+        if (opcion2 == 1)
+        {
+            tarea buscadorP = buscarTareaPorPalabra(pendientes, cant);
+
+            if (buscadorP.descripcion != NULL)
+            {
+                puts("\n\n----TAREA ENCONTRADA----");
+                printf("ID: %d\n", buscadorP.tareaID);
+                printf("Descripcion: %s\n", buscadorP.descripcion);
+                printf("Duracion: %d\n", buscadorP.duracion);
+            } else
+            {
+                puts("\n\n----TAREA NO ENCONTRADA----");
+            }
+        } else
+        {
+            if (opcion2 == 2)
+            {
+               tarea buscadorI = buscarTareaPorID(pendientes, cant);
+    
+                if (buscadorI.descripcion != NULL)
+                {
+                    puts("\n\n-----TAREA ENCONTRADA-----");
+                    printf("ID: %d\n", buscadorI.tareaID);
+                    printf("Descripcion: %s\n", buscadorI.descripcion);
+                    printf("Duracion: %d\n", buscadorI.duracion);
+                } else
+                {
+                    puts("\n\n-----TAREA NO ENCONTRADA-----");
+                } 
+            } else
+            {
+                puts("\n\n----CODIGO ERRONEO----");
+            }
+            
+            
+        }
+        
     } else
     {
-        puts("\n\n----TAREA NO ENCONTRADA----");
+        puts("\n\n------FIN DEL PROCESO------");
     }
-
-    tarea buscadorI = buscarTareaPorID(pendientes, cant);
     
-    if (buscadorI.descripcion != NULL)
-    {
-        puts("\n\n-----TAREA ENCONTRADA-----");
-        printf("ID: %d\n", buscadorI.tareaID);
-        printf("Descripcion: %s\n", buscadorI.descripcion);
-        printf("Duracion: %d\n", buscadorI.duracion);
-    } else
-    {
-        puts("\n\n-----TAREA NO ENCONTRADA-----");
-    }
+
     
     return 0;
 }
