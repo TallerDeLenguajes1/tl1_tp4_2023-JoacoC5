@@ -11,12 +11,12 @@ struct Tarea
 
 } typedef tarea;
 
-tarea buscarTarea (tarea **lista, int a, char clave[]);
+tarea buscarTareaPorPalabra (tarea **lista, int a, char clave[]);
+tarea buscarTareaPorID (tarea **lista, int a);
 
 int main () {
-    
-    srand(time(NULL));
 
+    srand(time(NULL));
     int cant;
 
     printf("Ingrese cuantas tareas debe cargar: ");
@@ -78,30 +78,44 @@ int main () {
             printf("Duracion: %d\n", pendientes[i]->duracion);
         } 
     }
+
     fflush(stdin);
     char clave[20];
 
-        puts("\n------BUSCADOR DE TAREA------\n");
-        printf("Ingrese la palabra clave: ");
-        gets(clave);
-        fflush(stdin);
-        tarea buscador = buscarTarea(pendientes, cant, clave);
+    puts("\n------BUSCADOR DE TAREA POR PALABRA------\n");
+    printf("Ingrese la palabra clave: ");
+    gets(clave);
+    fflush(stdin);
+    tarea buscadorP = buscarTareaPorPalabra(pendientes, cant, clave);
 
-        if (buscador.descripcion != NULL)
-        {
-            puts("\n\n----TAREA ENCONTRADA----");
-            printf("ID: %d\n", buscador.tareaID);
-            printf("Descripcion: %s\n", buscador.descripcion);
-            printf("Duracion: %d\n", buscador.duracion);
-        } else
-        {
-            puts("----TAREA NO ENCONTRADA----");
-        }
+    if (buscadorP.descripcion != NULL)
+    {
+        puts("\n\n----TAREA ENCONTRADA----");
+        printf("ID: %d\n", buscadorP.tareaID);
+        printf("Descripcion: %s\n", buscadorP.descripcion);
+        printf("Duracion: %d\n", buscadorP.duracion);
+    } else
+    {
+        puts("----TAREA NO ENCONTRADA----");
+    }
+
+    tarea buscadorI = buscarTareaPorID(pendientes, cant);
+    
+    if (buscadorI.descripcion != NULL)
+    {
+        puts("-----TAREA ENCONTRADA-----");
+        printf("ID: %d\n", buscadorI.tareaID);
+        printf("Descripcion: %s\n", buscadorI.descripcion);
+        printf("Duracion: %d\n", buscadorI.duracion);
+    } else
+    {
+        puts("-----TAREA NO ENCONTRADA-----");
+    }
     
     return 0;
 }
 
-tarea buscarTarea (tarea **lista, int a, char clave[])
+tarea buscarTareaPorPalabra (tarea **lista, int a, char clave[])
 {
     int aux;
     tarea *buscador = NULL;
@@ -115,12 +129,36 @@ tarea buscarTarea (tarea **lista, int a, char clave[])
                 buscador = lista[i];
                 break;
             } 
-            
-            
+ 
         }
         
     }
+    return *buscador;   
 
-    return *buscador;
-    
+}
+
+tarea buscarTareaPorID(tarea **lista, int a)
+{
+    int aux;
+    tarea *buscador;
+
+    puts("\n\n----BUSCADOR DE TAREAS POR ID----");
+    printf("\nID a buscar: ");
+    scanf("%d", &aux);
+    fflush(stdin);
+
+    for (int i = 0; i < a; i++)
+    {
+        if (lista[i] != NULL)
+        {
+            if (lista[i]->tareaID == aux)
+            {
+                buscador = lista[i];
+                break;
+            }
+        }
+  
+    }
+
+    return *buscador;   
 }
