@@ -85,6 +85,8 @@ int main () {
         
         auxLista = auxLista->siguiente;
     }
+
+    
     
     puts("\n------TAREAS REALIZADAS------");
     while (realizadas != NULL)
@@ -97,17 +99,49 @@ int main () {
         realizadas = realizadas->siguiente;
     }
 
+    Tnodo *auxBusqueda = crearListaVacia();
+    auxBusqueda = pendientes;
+
     puts("\n------TAREAS AUN PENDIENTES------");
-    while (pendientes != NULL)
+    while (auxBusqueda != NULL)
     {
-        printf("\nID: %d\n", pendientes->T->tareaID);
-        printf("Duracion: %d\n", pendientes->T->duracion);
-        printf("Descripcion: %s\n", pendientes->T->descripcion);
+        printf("\nID: %d\n", auxBusqueda->T->tareaID);
+        printf("Duracion: %d\n", auxBusqueda->T->duracion);
+        printf("Descripcion: %s\n", auxBusqueda->T->descripcion);
 
         puts("---------------");
-        pendientes = pendientes->siguiente;
+        auxBusqueda = auxBusqueda->siguiente;
     }
-    
+
+    int opcion2, buscador;
+    Tnodo *buscado;
+
+    puts("\n\n------BUSCADOR DE TAREAS------\n");
+    printf("Desea buscar una tarea?? // 1=si - 0=no //: ");
+    scanf("%d", &opcion2);
+
+    if (opcion2 == 1)
+    {
+        printf("ID de la tarea que busca: ");
+        scanf("%d", &buscador);
+
+        buscado = buscarNodo(pendientes, buscador);
+        if (buscado != NULL)
+        {
+            puts("\n----TAREA ENCONTRADA----\n");
+            printf("ID: %d\n", buscado->T->tareaID);
+            printf("Duracion: %d\n", buscado->T->duracion);
+            printf("Descripcion: %s\n", buscado->T->descripcion);
+        } else
+        {
+            puts("\n----NO SE ENCONTRO LA TAREA----\n");
+        }
+        
+        
+    } else
+    {
+        puts("------FIN DEL PROCESO------");
+    }
     
     return 0;
 }
@@ -138,7 +172,7 @@ Tnodo * buscarNodo (Tnodo *lista, int id)
 {
     Tnodo * aux = lista;
 
-    while (aux && aux->T->tareaID != id);
+    while (aux && aux->T->tareaID != id)
     {
         aux = aux->siguiente;
     }
@@ -167,8 +201,7 @@ void quitarNodo (Tnodo *lista, tarea a)
         {
             auxAnt->siguiente = aux->siguiente;
         }
-        
-        
+
     }
     
 }
