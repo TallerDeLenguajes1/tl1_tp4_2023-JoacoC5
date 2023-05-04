@@ -192,16 +192,16 @@ int main () {
                     {
                         if (opcionLista == 2)
                         {
-                            quitado = auxPendientes->T;
+                            quitado = buscado->T;
                             insertarNodo(&proceso, crearNodo(quitado));
-                            quitarNodo(&pendientes, *(auxPendientes->T));
+                            quitarNodo(&pendientes, *(buscado->T));
                         } else
                         {
                             if (opcionLista == 3)
                             {
-                                quitado = auxPendientes->T;
+                                quitado = buscado->T;
                                 insertarNodo(&realizadas, crearNodo(quitado));
-                                quitarNodo(&pendientes, *(auxPendientes->T));
+                                quitarNodo(&pendientes, *(buscado->T));
                             } else
                             {
                                 printf("\nYa se encuentra en esta lista\n");    
@@ -215,16 +215,16 @@ int main () {
                         {
                             if (opcionLista == 1)
                             {
-                                quitado = auxProceso->T;
+                                quitado = buscado->T;
                                 insertarNodo(&pendientes, crearNodo(quitado));
-                                quitarNodo(&proceso, *(auxProceso->T));
+                                quitarNodo(&proceso, *(buscado->T));
                             } else
                             {
                                 if (opcionLista == 3)
                                 {
-                                    quitado = auxProceso->T;
+                                    quitado = buscado->T;
                                     insertarNodo(&realizadas, crearNodo(quitado));
-                                    quitarNodo(&proceso, *(auxProceso->T));
+                                    quitarNodo(&proceso, *(buscado->T));
                                 } else
                                 {
                                     printf("\nYa se encuentra en esta lista\n");
