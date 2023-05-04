@@ -26,11 +26,13 @@ void insertarNodo (Tnodo **lista, Tnodo *nuevoNodo);
 
 Tnodo * buscarNodo (Tnodo *lista, int id);
 
-void quitarNodo (Tnodo *lista, tarea a);
+void quitarNodo (Tnodo **lista, tarea a);
 
-void eliminarNodo (Tnodo *nodo);
+void eliminarNodo (Tnodo **nodo);
 
 tarea * cargarTarea (char buff[], int id, int duracion);
+
+void mostrarDatos (Tnodo *lista);
 
 
 int main () {
@@ -80,14 +82,14 @@ int main () {
         {
             quitado = auxPendientes->T;
             insertarNodo(&realizadas, crearNodo(quitado));
-            quitarNodo(pendientes, *(auxPendientes->T));
+            quitarNodo(&pendientes, *(auxPendientes->T));
         } else
         {
             if (opcion == 2)
             {
                 quitado = auxPendientes->T;
                 insertarNodo(&proceso, crearNodo(quitado));
-                quitarNodo(pendientes, *(auxPendientes->T));
+                quitarNodo(&pendientes, *(auxPendientes->T));
             }
             
         }
@@ -96,15 +98,14 @@ int main () {
     }
 
     int menu, buscador, opcionTarea, opcionLista, origen;
-    Tnodo *buscado=NULL, *auxRealizadas=crearListaVacia(), *auxProceso = crearListaVacia();
-
-    //SOLO FUNCIONA EN LA PRIMERA VUELTA
+    Tnodo *buscado, *auxRealizadas=crearListaVacia(), *auxProceso = crearListaVacia();
 
     while (menu != 0)
     {       
         auxPendientes = pendientes;
         auxProceso = proceso;
         auxRealizadas = realizadas;
+        buscado = NULL;
 
         puts("\n\n--------MENU DE TAREAS---------\n\n"); 
 
@@ -153,7 +154,7 @@ int main () {
 
         if (buscador <= cont) //no deberia recibir numeros negativos, solo mayores o igual a 1
         {
-            if (opcionTarea == 1)
+            if (opcionTarea == 1) //solo funciona con la tarea q se encuentra arriba de su lista 
             {
                 if (buscado == NULL)
                 {
@@ -177,15 +178,15 @@ int main () {
                     
                 }
 
+                auxPendientes = pendientes;
+                auxProceso = proceso;
+                auxRealizadas = realizadas;
+
                 if (buscado != NULL)
                 {
                     puts("\n\n----TAREA ENCONTRADA----\n");
                     printf("A que lista desea mover la tarea?? \n// 1=pendientes - 2=proceso - 3=realizadas //: ");
-                    scanf("%d", &opcionLista);
-
-                    auxPendientes = pendientes;
-                    auxProceso = proceso;
-                    auxRealizadas = realizadas;
+                    scanf("%d", &opcionLista);    
 
                     if (origen == 1)
                     {
@@ -193,14 +194,14 @@ int main () {
                         {
                             quitado = auxPendientes->T;
                             insertarNodo(&proceso, crearNodo(quitado));
-                            quitarNodo(pendientes, *(auxPendientes->T));
+                            quitarNodo(&pendientes, *(auxPendientes->T));
                         } else
                         {
                             if (opcionLista == 3)
                             {
                                 quitado = auxPendientes->T;
                                 insertarNodo(&realizadas, crearNodo(quitado));
-                                quitarNodo(pendientes, *(auxPendientes->T));
+                                quitarNodo(&pendientes, *(auxPendientes->T));
                             } else
                             {
                                 printf("\nYa se encuentra en esta lista\n");    
@@ -216,14 +217,14 @@ int main () {
                             {
                                 quitado = auxProceso->T;
                                 insertarNodo(&pendientes, crearNodo(quitado));
-                                quitarNodo(proceso, *(auxProceso->T));
+                                quitarNodo(&proceso, *(auxProceso->T));
                             } else
                             {
                                 if (opcionLista == 3)
                                 {
                                     quitado = auxProceso->T;
                                     insertarNodo(&realizadas, crearNodo(quitado));
-                                    quitarNodo(proceso, *(auxProceso->T));
+                                    quitarNodo(&proceso, *(auxProceso->T));
                                 } else
                                 {
                                     printf("\nYa se encuentra en esta lista\n");
@@ -240,14 +241,14 @@ int main () {
                                 {
                                     quitado = auxRealizadas->T;
                                     insertarNodo(&pendientes, crearNodo(quitado));
-                                    quitarNodo(realizadas, *(auxRealizadas->T));
+                                    quitarNodo(&realizadas, *(auxRealizadas->T));
                                 } else
                                 {
                                     if (opcionLista == 2)
                                     {
                                         quitado = auxRealizadas->T;
                                         insertarNodo(&proceso, crearNodo(quitado));
-                                        quitarNodo(realizadas, *(auxRealizadas->T));
+                                        quitarNodo(&realizadas, *(auxRealizadas->T));
                                     } else
                                     {
                                         printf("\nYa se encuentra en esta lista\n");
@@ -271,7 +272,7 @@ int main () {
 
             } else
             {
-                if (opcionTarea == 2)
+                if (opcionTarea == 2) 
                 {
                     if (buscado == NULL)
                     {
@@ -302,16 +303,16 @@ int main () {
                     switch (origen)
                     {
                     case 1:
-                        quitarNodo(pendientes, *(buscado->T));
-                        //eliminarNodo(buscado);
+                        quitarNodo(&pendientes, *(buscado->T));
+                        //eliminarNodo(&buscado);
                         break;
                     case 2:
-                        quitarNodo(proceso, *(buscado->T));
-                        //eliminarNodo(buscado);
+                        quitarNodo(&proceso, *(buscado->T));
+                        //eliminarNodo(&buscado);
                         break;
                     case 3:
-                        quitarNodo(realizadas, *(buscado->T));
-                        //eliminarNodo(buscado);
+                        quitarNodo(&realizadas, *(buscado->T));
+                        //eliminarNodo(&buscado);
                         break;
                     }                    
                     
@@ -329,37 +330,16 @@ int main () {
 
     }
 
-    puts("------FIN DEL PROCESO------");
-        
-    /*int opcion2, buscador;
-    Tnodo *buscado;
+    puts("\n\n------RESUMEN DE LAS LISTAS------\n");
+    puts("--REALIZADAS--");
+    mostrarDatos(realizadas);
+    puts("\n\n--EN PROCESO--");
+    mostrarDatos(proceso);
+    puts("\n\n--PENDIENTES--");
+    mostrarDatos(pendientes);
+    
 
-    puts("\n\n------BUSCADOR DE TAREAS------\n");
-    printf("Desea buscar una tarea?? // 1=si - 0=no //: ");
-    scanf("%d", &opcion2);
-
-    if (opcion2 == 1)
-    {
-        printf("ID de la tarea que busca: ");
-        scanf("%d", &buscador);
-
-        buscado = buscarNodo(pendientes, buscador);
-        if (buscado != NULL)
-        {
-            puts("\n----TAREA ENCONTRADA----\n");
-            printf("ID: %d\n", buscado->T->tareaID);
-            printf("Duracion: %d\n", buscado->T->duracion);
-            printf("Descripcion: %s\n", buscado->T->descripcion);
-        } else
-        {
-            puts("\n----NO SE ENCONTRO LA TAREA----\n");
-        }
-        
-        
-    } else
-    {
-        puts("------FIN DEL PROCESO------");
-    }*/
+    puts("\n\n------FIN DEL PROCESO------");
     
     return 0;
 }
@@ -390,43 +370,48 @@ Tnodo * buscarNodo (Tnodo *lista, int id)
 {
     Tnodo * aux = lista;
 
-    while (aux && aux->T->tareaID != id)
+    while (aux)
     {
-        aux = aux->siguiente;
+        if (aux->T->tareaID == id)
+        {
+            return aux;
+        } else
+        {
+            aux = aux->siguiente;
+        }
+        
+        
     }
-
-    return aux;
     
 }
 
-void quitarNodo (Tnodo *lista, tarea a)
+void quitarNodo (Tnodo **lista, tarea a)
 {
-    Tnodo * aux = lista;
-    Tnodo * auxAnt = lista;
+    Tnodo * aux = *lista;
+    Tnodo * auxAnt = *lista;
 
-    if (aux != NULL && aux->T->tareaID == a.tareaID)
+    while (aux != NULL && aux->T->tareaID != a.tareaID)
     {
-        lista = lista->siguiente;
-    } else
-    {
-        while (aux != NULL && aux->T->tareaID != a.tareaID)
-        {
             auxAnt = aux;
             aux = aux->siguiente;
-        }
+    }
 
-        if (aux != NULL)
+    if (aux != NULL)
+    {
+        if (aux == *lista)
+        {
+            *lista = aux->siguiente;
+        } else
         {
             auxAnt->siguiente = aux->siguiente;
         }
-
+        
     }
     
 }
 
-void eliminarNodo (Tnodo *nodo)
+void eliminarNodo (Tnodo **nodo)
 {
-    free(nodo->T);
     free(nodo);
 }
 
@@ -439,4 +424,22 @@ tarea * cargarTarea (char buff[], int id, int duracion)
     aux->duracion = duracion;
 
     return aux;
+}
+
+void mostrarDatos (Tnodo *lista)
+{
+    Tnodo *aux = lista;
+    int cont = 0, duracion = 0;
+
+
+    while (aux != NULL)
+    {
+        duracion += aux->T->duracion;
+        cont ++; 
+
+        aux = aux->siguiente;
+    }
+
+    printf("\nEn esta lista hay %d tareas\nLa duracion total de ellas es: %d", cont, duracion);
+    
 }
